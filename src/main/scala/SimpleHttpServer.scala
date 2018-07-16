@@ -12,9 +12,11 @@ object SimpleHttpServer {
     implicit val executionContext = system.dispatcher
 
     val route =
-      path("hello") {
-        get {
-          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+      get {
+        path("hello") {
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>hello</h1>"))
+        } ~ path("world") {
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>world</h1>"))
         }
       }
 
