@@ -1,5 +1,5 @@
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import akka.http.scaladsl.server.{HttpApp, Route}
+import akka.http.scaladsl.model.{ ContentTypes, HttpEntity }
+import akka.http.scaladsl.server.{ HttpApp, Route }
 
 object UseHttpApp {
   def main(args: Array[String]): Unit = {
