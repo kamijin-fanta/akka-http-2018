@@ -24,7 +24,7 @@ object DirectivesCompose extends HttpApp {
     }
 }
 
-object HowToDirectives extends HttpApp {
+object DirectivesInternal1 extends HttpApp {
   def main(args: Array[String]): Unit = {
     startServer("localhost", 8080)
   }
@@ -33,11 +33,12 @@ object HowToDirectives extends HttpApp {
     (ctx: RequestContext) => ctx.complete("ok")
 }
 
-object HowToDirectivesConditional extends HttpApp {
+object DirectivesInternal2 extends HttpApp {
   def main(args: Array[String]): Unit = {
     startServer("localhost", 8080)
   }
 
+  // type Route = RequestContext ⇒ Future[RouteResult]
   override def routes: Route =
     ctx => ctx.request.uri.path.toString match {
       case "/foo" => ctx.complete("/foo")
@@ -46,7 +47,7 @@ object HowToDirectivesConditional extends HttpApp {
     }
 }
 
-object HowToDirectivesCustom extends HttpApp {
+object DirectivesInternal3 extends HttpApp {
   def main(args: Array[String]): Unit = {
     startServer("localhost", 8080)
   }
