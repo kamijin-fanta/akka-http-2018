@@ -39,5 +39,10 @@ object ScalaBasic {
       case x => s"other $x" // すべてのケースに一致しなかった場合にマッチ
     }
     println(matchingResult)
+
+    println("6. ------")
+    val some: Option[String] = Some("string")
+    val none: Option[String] = None
+    println(s"some: ${some.getOrElse("---")} / none: ${none.getOrElse("---")}")
   }
 }
