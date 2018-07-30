@@ -42,7 +42,7 @@ object DirectivesInternal2 extends HttpApp {
   override def routes: Route =
     ctx => ctx.request.uri.path.toString match {
       case "/foo" => ctx.complete("/foo")
-      case "/error" => ctx.reject(throw new Exception("ERROR"))
+      case "/error" => ctx.reject()
       case _ => ctx.reject()
     }
 }
