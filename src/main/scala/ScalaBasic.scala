@@ -3,6 +3,7 @@ object ScalaBasic {
     println("1. ------ 変数")
     val immutableVariable: String = "string literal" // 不変な変数を宣言　型を明示
     var mutableIntVariable = 100 // 変更可能な変数を宣言　型はコンパイル時に推論させる
+    // immutableVariable = "hoge" // valで宣言したので、変更しようとするとエラーになる
     mutableIntVariable = 150
     println(immutableVariable)
     println(mutableIntVariable)
@@ -23,14 +24,14 @@ object ScalaBasic {
     val tupleArrowed = 100 -> "value" // 要素が2つのタプルは"->"で宣言可能
     println(s"tuple: $tuple / $tupleArrowed")
 
-    println("4. ------")
+    println("4. ------ if条件")
     val fooValue = 200
     val ifResult =
       if (fooValue == 100) "is 100"
       else "not 100" // ifも式なので、値を返す
     println(ifResult)
 
-    println("5. ------")
+    println("5. ------ パターンマッチング")
     val foo = 110
     val matchingResult = foo match { // マッチングを記述できる　条件は上から順に見る
       case 10 => "value is 10" // 値のみ記述すると、同一の場合のみマッチング
@@ -40,7 +41,7 @@ object ScalaBasic {
     }
     println(matchingResult)
 
-    println("6. ------")
+    println("6. ------ Option")
     val some: Option[String] = Some("string")
     val none: Option[String] = None
     println(s"some: ${some.getOrElse("---")} / none: ${none.getOrElse("---")}")
