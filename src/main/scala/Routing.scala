@@ -1,8 +1,8 @@
-import DirectivesInternal3.{ complete, pathPrefix, startServer }
 import akka.http.scaladsl.model.Uri.Path
 import akka.http.scaladsl.server.{ Directive, Directive0, HttpApp, Route }
 
 object RoutingBasic extends HttpApp {
+
   def main(args: Array[String]): Unit = {
     startServer("localhost", 8080)
   }
