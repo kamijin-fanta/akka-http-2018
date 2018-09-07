@@ -5,6 +5,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{ HttpApp, Route }
 import akka.stream.ActorMaterializer
 
+import scala.concurrent.Future
 import scala.io.StdIn
 
 object HttpServerBasic {
@@ -16,29 +17,24 @@ object HttpServerBasic {
     val route =
       get {
         path("hello") {
-          complete(HttpEntity(
-            ContentTypes.`text/html(UTF-8)`,
-            "<h1>hello</h1>"))
+          complete(HttpEntity("hello"))
         } ~ path("world") {
-          complete(HttpEntity(
-            ContentTypes.`text/html(UTF-8)`,
-            "<h1>world</h1>"))
+          complete(HttpEntity("world"))
         }
       }
-    val bindingFuture = Http()
-      .bindAndHandle(route, "localhost", 8080)
+    val binding: Future[Http.ServerBinding] =
+      Http().bindAndHandle(route, "localhost", 8080)
     println(s"Start: http://localhost:8080/\nPress RETURN to stop...")
     StdIn.readLine()
-    bindingFuture
+    binding
       .flatMap(_.unbind())
       .onComplete(_ => system.terminate())
   }
 }
 
 object HttpServerUseHttpApp {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit =
     WebServer.startServer("localhost", 8080)
-  }
 
   object WebServer extends HttpApp {
     override def routes: Route =
@@ -46,22 +42,22 @@ object HttpServerUseHttpApp {
         get {
           complete(HttpEntity(
             ContentTypes.`text/html(UTF-8)`,
-            "<h1>Say hello to akka-http</h1>"))
+            "<h1>hello akka-http</h1>"))
         }
       }
   }
-
 }
 
 object HttpServerHttpAppShorthand extends HttpApp {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit =
     startServer("localhost", 8080)
-  }
 
   override def routes: Route =
     path("hello") {
       get {
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+        complete(HttpEntity(
+          ContentTypes.`text/html(UTF-8)`,
+          "<h1>Say hello to akka-http</h1>"))
       }
     }
 }
