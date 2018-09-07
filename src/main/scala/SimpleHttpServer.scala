@@ -14,7 +14,7 @@ object HttpServerBasic {
     implicit val materializer = ActorMaterializer()
     implicit val executionContext = system.dispatcher
 
-    val route =
+    val route: Route =
       get {
         path("hello") {
           complete(HttpEntity("hello"))
@@ -22,8 +22,10 @@ object HttpServerBasic {
           complete(HttpEntity("world"))
         }
       }
+
     val binding: Future[Http.ServerBinding] =
       Http().bindAndHandle(route, "localhost", 8080)
+
     println(s"Start: http://localhost:8080/\nPress RETURN to stop...")
     StdIn.readLine()
     binding
