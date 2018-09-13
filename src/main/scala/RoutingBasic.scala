@@ -8,7 +8,11 @@ object RoutingBasic extends HttpApp {
 
   override def routes: Route =
     pathPrefix("hello") {
-      complete("hello ")
+      get {
+        complete("get hello")
+      } ~ post {
+        complete("post hello")
+      }
     } ~ customPathPrefix("bar") {
       complete("bar content")
     }

@@ -1,4 +1,4 @@
-import akka.http.scaladsl.model.Uri.{ Host, Query }
+import akka.http.scaladsl.model.Uri.Query
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.{ HttpOrigin, RawHeader }
 import org.scalatest.FunSpec
@@ -8,7 +8,8 @@ class DataModelSpec extends FunSpec {
     assert(Uri("https://akka.io:443/try-akka/") ===
       Uri.from(scheme = "https", host = "akka.io", port = 443, path = "/try-akka/"))
 
-    assert(Query("key1=value1&key2=value2").get("key1") === Some("value1"))
+    assert(Query("key1=value1&key2=Foo&key2=Bar").get("key1") === Some("value1"))
+    assert(Query("key=Foo&key=Bar").getAll("key") === List("Bar", "Foo"))
   }
   it("httpRequest") {
     val tryAkkaUri = Uri("https://akka.io:443/try-akka/")
