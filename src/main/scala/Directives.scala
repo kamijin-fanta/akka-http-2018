@@ -17,7 +17,7 @@ object DirectivesCompose extends HttpApp {
         complete("foo content")
       }
     } ~ getUser { userName =>
-      complete(s"get user request $userName")
+      complete(s"get user: $userName")
     } ~ {
       complete("other method request")
     }
@@ -42,7 +42,8 @@ object DirectivesTMap extends HttpApp {
     startServer("localhost", 8080)
   }
 
-  val domainAndUser: Directive[(String, String)] = pathPrefix(Segment / Segment)
+  val domainAndUser: Directive[(String, String)] =
+    pathPrefix(Segment / Segment)
   val mailAddress: Directive1[String] = domainAndUser.tmap {
     case (domain, user) => s"$user@$domain"
   }
@@ -50,6 +51,20 @@ object DirectivesTMap extends HttpApp {
   override def routes: Route =
     mailAddress { mailAddress =>
       complete(s"mail: $mailAddress")
+    }
+}
+
+object DirectivesRequire extends HttpApp {
+  def main(args: Array[String]): Unit = {
+    startServer("localhost", 8080)
+  }
+
+  def customHost(hostname: String): Directive0 =
+    extractHost.require(_ == hostname)
+
+  override def routes: Route =
+    customHost("example.com") {
+      complete(s"example.com content")
     }
 }
 
