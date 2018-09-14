@@ -1,5 +1,5 @@
 
-import akka.http.scaladsl.model.{HttpMethod, HttpMethods}
+import akka.http.scaladsl.model.{ HttpMethod, HttpMethods }
 import akka.http.scaladsl.model.Uri.Path
 import akka.http.scaladsl.server._
 
@@ -23,7 +23,6 @@ object DirectivesCompose extends HttpApp {
     }
 }
 
-
 object DirectivesMap extends HttpApp {
   def main(args: Array[String]): Unit = {
     startServer("localhost", 8080)
@@ -35,6 +34,22 @@ object DirectivesMap extends HttpApp {
   override def routes: Route =
     getUserUpperCase { userName =>
       complete(s"UpperCase: $userName")
+    }
+}
+
+object DirectivesTMap extends HttpApp {
+  def main(args: Array[String]): Unit = {
+    startServer("localhost", 8080)
+  }
+
+  val domainAndUser: Directive[(String, String)] = pathPrefix(Segment / Segment)
+  val mailAddress = domainAndUser.tmap {
+    case (domain, user) => s"$user@$domain"
+  }
+
+  override def routes: Route =
+    mailAddress { mailAddress =>
+      complete(s"mail: $mailAddress")
     }
 }
 
@@ -85,14 +100,14 @@ object DirectivesInternal4 extends HttpApp {
   def main(args: Array[String]): Unit = {
     startServer("localhost", 8080)
   }
-val hoge: Directive1[String] = get & pathPrefix("user" / Segment)
+  val hoge: Directive1[String] = get & pathPrefix("user" / Segment)
   override def routes: Route =
     customMethodExtractor { method =>
       complete(s"bar content $method")
     }
 
-  def customMethodExtractor: Directive1[HttpMethod] = new Directive {
+  def customMethodExtractor: Directive1[HttpMethod] = new Directive[Tuple1[HttpMethod]] {
     override def tapply(f: Tuple1[HttpMethod] => Route): Route =
-      ctx => f(ctx.request.method)(ctx)
+      ctx => f(Tuple1(ctx.request.method))(ctx)
   }
 }
