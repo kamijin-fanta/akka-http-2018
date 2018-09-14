@@ -1,5 +1,4 @@
 
-import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.model.Uri.Path
 import akka.http.scaladsl.server._
 
@@ -14,8 +13,6 @@ object DirectivesCompose extends HttpApp {
         complete("get foo content")
       } ~ post {
         complete("post foo content")
-      } ~ {
-        complete(StatusCodes.MethodNotAllowed, "method not allowed")
       }
     } ~ (get & extractUri) { uri =>
       complete(s"hoge request ${uri.path}")

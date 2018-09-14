@@ -1,5 +1,4 @@
-import akka.http.scaladsl.model.Uri.Path
-import akka.http.scaladsl.server.{ Directive, Directive0, HttpApp, Route }
+import akka.http.scaladsl.server.{ HttpApp, Route }
 
 object RoutingBasic extends HttpApp {
   def main(args: Array[String]): Unit = {
@@ -13,15 +12,7 @@ object RoutingBasic extends HttpApp {
       } ~ post {
         complete("post hello")
       }
-    } ~ customPathPrefix("bar") {
-      complete("bar content")
+    } ~ path("user" / Segment) { userName =>
+      complete(s"UserName: $userName")
     }
-
-  def customPathPrefix(string: String): Directive0 = new Directive[Unit] {
-    override def tapply(inner: Unit => Route): Route = { ctx =>
-      val currentPath = ctx.request.uri.path
-      if (currentPath.startsWith(Path("/" + string))) inner()(ctx)
-      else ctx.reject()
-    }
-  }
 }
