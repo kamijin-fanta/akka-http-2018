@@ -12,7 +12,7 @@ object RoutingBasic extends HttpApp {
       } ~ post {
         complete("post hello")
       }
-    } ~ path("user" / Segment) { userName =>
+    } ~ ((get | post) & path("user" / Segment)) { userName =>
       complete(s"UserName: $userName")
     }
 }

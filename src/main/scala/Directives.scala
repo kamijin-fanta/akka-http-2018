@@ -1,4 +1,5 @@
 
+import akka.http.scaladsl.model.{HttpMethod, HttpMethods}
 import akka.http.scaladsl.model.Uri.Path
 import akka.http.scaladsl.server._
 
@@ -35,11 +36,10 @@ object DirectivesInternal2 extends HttpApp {
     startServer("localhost", 8080)
   }
 
-  // type Route = RequestContext ⇒ Future[RouteResult]
   override def routes: Route =
-    ctx => ctx.request.uri.path.toString match {
-      case "/foo" => ctx.complete("/foo")
-      case "/error" => ctx.reject()
+    ctx => ctx.request.method match {
+      case HttpMethods.GET => ctx.complete("get content")
+      case HttpMethods.POST => ctx.complete("post content")
       case _ => ctx.reject()
     }
 }
@@ -62,5 +62,21 @@ object DirectivesInternal3 extends HttpApp {
       if (currentPath.startsWith(Path("/" + string))) inner()(ctx)
       else ctx.reject()
     }
+  }
+}
+
+object DirectivesInternal4 extends HttpApp {
+  def main(args: Array[String]): Unit = {
+    startServer("localhost", 8080)
+  }
+
+  override def routes: Route =
+    customMethodExtractor { method =>
+      complete(s"bar content $method")
+    }
+
+  def customMethodExtractor: Directive1[HttpMethod] = new Directive {
+    override def tapply(f: Tuple1[HttpMethod] => Route): Route =
+      ctx => f(ctx.request.method)(ctx)
   }
 }
