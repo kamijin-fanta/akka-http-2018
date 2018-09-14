@@ -43,7 +43,7 @@ object DirectivesTMap extends HttpApp {
   }
 
   val domainAndUser: Directive[(String, String)] = pathPrefix(Segment / Segment)
-  val mailAddress = domainAndUser.tmap {
+  val mailAddress: Directive1[String] = domainAndUser.tmap {
     case (domain, user) => s"$user@$domain"
   }
 
