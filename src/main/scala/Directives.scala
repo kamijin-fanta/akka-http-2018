@@ -1,7 +1,10 @@
 
-import akka.http.scaladsl.model.{ HttpMethod, HttpMethods }
+import akka.http.scaladsl.model.StatusCodes.Redirection
+import akka.http.scaladsl.model.{ ContentRange, HttpMethod, HttpMethods, Uri }
 import akka.http.scaladsl.model.Uri.Path
+import akka.http.scaladsl.model.headers.{ Authorization, Host, HttpOrigin, HttpOriginRange }
 import akka.http.scaladsl.server._
+import akka.http.scaladsl.server.directives.Credentials
 
 object DirectivesCompose extends HttpApp {
   def main(args: Array[String]): Unit = {
@@ -115,7 +118,7 @@ object DirectivesInternal4 extends HttpApp {
   def main(args: Array[String]): Unit = {
     startServer("localhost", 8080)
   }
-  val hoge: Directive1[String] = get & pathPrefix("user" / Segment)
+
   override def routes: Route =
     customMethodExtractor { method =>
       complete(s"bar content $method")
