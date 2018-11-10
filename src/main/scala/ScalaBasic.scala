@@ -20,7 +20,8 @@ object ScalaBasic {
     println(s"place holder $fnResult / ${doubleMethod(10)}") // s""を使用することでプレスホルダになる
 
     println("3. ------ タプル")
-    val tuple = (100, "value", (200, "nest tuple")) // 数個の変数をまとめる事ができる　中身は不変
+    val tuple: Tuple3[Int, String, Tuple2[Int, String]] =
+      (100, "value", (200, "nest tuple")) // 数個の変数をまとめる事ができる　中身は不変
     val tupleArrowed = 100 -> "value" // 要素が2つのタプルは"->"で宣言可能
     println(s"tuple: $tuple / $tupleArrowed")
 
@@ -41,7 +42,12 @@ object ScalaBasic {
     }
     println(matchingResult)
 
-    println("6. ------ Option")
+    println("6. ------ List")
+    val list = List(1, 2, 3)
+    val doubleList = list.map(n => n * 2)
+    println(s"doubleList: $doubleList")
+
+    println("7. ------ Option")
     val some: Option[String] = Some("string")
     val none: Option[String] = None
     println(s"some: ${some.getOrElse("---")} / none: ${none.getOrElse("---")}")
